@@ -1,9 +1,9 @@
 import pytest
 import allure
 import data
-import api
 import helpers
 
+from api import UserApi
 
 @allure.suite('Изменение данных пользователя')
 class TestUpdateUser:
@@ -21,7 +21,7 @@ class TestUpdateUser:
         token = logged['accessToken']
         new_value = helpers.generate_new_user_data(field_to_update)
         payload = {field_to_update: new_value}
-        response = api.update_user(payload, token)
+        response = UserApi.update_user(payload, token)
         assert response.status_code == 200
         assert response.json()["success"] is True
 
@@ -40,7 +40,7 @@ class TestUpdateUser:
         token = None
         new_value = helpers.generate_new_user_data(field_to_update)
         payload = {field_to_update: new_value}
-        response = api.update_user(payload, token)
+        response = UserApi.update_user(payload, token)
         assert response.status_code == 401
         assert response.json()["success"] is False
         assert response.json()["message"] == data.MESSAGE_WITHOUT_AUTHORIZED

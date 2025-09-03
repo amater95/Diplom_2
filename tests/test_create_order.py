@@ -1,6 +1,7 @@
 import allure
 import data
-import api
+
+from api import OrderApi
 
 
 @allure.suite('Создание заказа')
@@ -12,7 +13,7 @@ class TestCreateOrder:
             'ingredients': valid_ingredient_list_id
         }
         token = logged['accessToken']
-        response = api.create_order(payload, token)
+        response = OrderApi.create_order(payload, token)
         assert response.status_code == 200
         assert response.json()['success'] is True
 
@@ -24,7 +25,7 @@ class TestCreateOrder:
             'ingredients': valid_ingredient_list_id
         }
         token = None
-        response = api.create_order(payload, token)
+        response = OrderApi.create_order(payload, token)
         assert response.status_code == 200
         assert response.json()['success'] is True
 
@@ -36,7 +37,7 @@ class TestCreateOrder:
             'ingredients': []
         }
         token = logged['accessToken']
-        response = api.create_order(payload, token)
+        response = OrderApi.create_order(payload, token)
         assert response.status_code == 400
         assert response.json()['message'] == data.MESSAGE_MISSED_INGREDIENTS
 
@@ -48,5 +49,5 @@ class TestCreateOrder:
             'ingredients': data.INVALID_LIST_HASHES
         }
         token = logged['accessToken']
-        response = api.create_order(payload, token)
+        response = OrderApi.create_order(payload, token)
         assert response.status_code == 500

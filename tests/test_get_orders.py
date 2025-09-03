@@ -1,6 +1,7 @@
 import allure
 import data
-import api
+
+from api import OrderApi
 
 
 @allure.suite('Получение заказов конкретного пользователя')
@@ -12,9 +13,9 @@ class TestGetOrder:
         order_payload = {
             'ingredients': valid_ingredient_list_id
         }
-        response = api.create_order(order_payload, token)
+        response = OrderApi.create_order(order_payload, token)
         assert response.status_code == 200
-        response = api.get_orders(token)
+        response = OrderApi.get_orders(token)
         response_payload = response.json()
         assert response.status_code == 200
         assert response_payload['success'] is True
@@ -26,6 +27,6 @@ class TestGetOrder:
     @allure.description('Отправляем запрос на получение заказов без авторизации')
     def test_get_orders_without_auth(self):
         token = None
-        response = api.get_orders(token)
+        response = OrderApi.get_orders(token)
         assert response.status_code == 401
         assert response.json()['message'] == data.MESSAGE_WITHOUT_AUTHORIZED
